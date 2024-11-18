@@ -2,7 +2,10 @@ class BooksController < ApplicationController
   before_action :fetch_book, only: %i[show update destroy]
 
   def index
-    @books = Book.ransack(params[:q]).result
+    # params[:q][:title_cont]
+    # params[:q][:sort] = 'title desc'
+    # publication_year and rating
+    @books = Book.all.order('rating desc, publication_year desc')
 
     render json: @books
   end
@@ -15,6 +18,16 @@ class BooksController < ApplicationController
     @book.update(permit_params)
 
     render json: @book
+  end
+
+  def create
+    @book = Book.new(permit_params)
+
+    if @book.save
+      render json: @book, status: :created
+    else
+      render json: @book.errors.full_messages, status: :unprocessable_entity
+    end
   end
 
   def destroy

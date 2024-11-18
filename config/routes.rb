@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
   resources :books
 
-  mount Rswag::Api::Engine
+  # mount Rswag::Api::Engine
 
   # Defines the root path route ("/")
   # root "posts#index"
